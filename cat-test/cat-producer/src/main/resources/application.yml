@@ -45,3 +45,5 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+logging:
+  path: /home/auditor/smartOneStudioSh/logs/cat-producer

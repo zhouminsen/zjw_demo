@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import zjw.cat.consumer.annotation.LogAnnotation;
 import zjw.cat.producer.entity.Student;
 import zjw.cat.producer.service.StudentService;
 
@@ -20,6 +21,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @LogAnnotation("helloWorld")
     @GetMapping("/helloWorld")
     public Object helloWorld(HttpServletRequest request, HttpServletResponse response) {
         //do your business

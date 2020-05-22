@@ -11,9 +11,9 @@
 	<!-- logback中的配置文件，name的值是变量的名称。定义变量后，可以使“${}”来使用变量。 -->
 	<!-- 从springboot的配置文件中获取值 -->
 	<springProperty scope="context" name="logPath" source="logging.path"
-		defaultValue="${LOG_PATH}/cat-producer/" />
+		defaultValue="${LOG_PATH}/cat-consumer/" />
 	<springProperty scope="context" name="appName"
-		source="spring.application.name" defaultValue="cat-producer" />
+		source="spring.application.name" defaultValue="cat-consumer" />
 	<!-- 自定义变量 -->
 	<property name="test" value="test-property" />
 	<!-- 可以导入其他来源配置，并且可以使用其中的变量 -->
