@@ -1,0 +1,47 @@
+server:
+dubbo:
+  scan:
+    basePackages: zjw.cat.producer.service
+  application:
+    name: cat-producer
+    logger: slf4j
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 21802
+    threadpool: cached
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  provider:
+    filter: sosExceptionFilter,-exception
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/web?useSSL=false&allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    cachePrepStmts: true
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    initialSize: 10
+    maxActive: 100
+    maxPoolPreparedStatementPerConnectionSize: 50
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 5
+    poolPreparedStatements: true
+    removeAbandoned: true
+    testOnBorrow: false
+    testOnReturn: false
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    type: com.alibaba.druid.pool.DruidDataSource
+    validationQuery: select 'x'
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto

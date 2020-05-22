@@ -1,0 +1,13 @@
+server:
+  #端口
+  port: 8100
+dubbo:
+  application:
+    name: cat-consumer
+  protocol:
+    id: dubbo
+    name: dubbo
+    threadpool: cached
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  provider:
