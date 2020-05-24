@@ -1,7 +1,8 @@
 package zjw.cat.consumer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zjw.cat.consumer.annotation.LogAnnotation;
@@ -22,13 +23,10 @@ public class StudentController {
     private StudentService studentService;
 
     @LogAnnotation("helloWorld")
-    @GetMapping("/helloWorld")
-    public Object helloWorld(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/helloWorld")
+    public Object helloWorld(@RequestBody Student student, HttpServletRequest request, HttpServletResponse response) {
         //do your business
-        Student s = new Student();
-        s.setClassName("10年级");
-        s.setScore(1005);
-        studentService.add3(s);
+        studentService.add(student);
         return "haha";
     }
 }

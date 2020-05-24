@@ -23,14 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
-/**
- * <p>
- * 日志拦截器
- * </p>
- *
- * @author clive
- * @since 2019-06-24
- */
 @Aspect
 @Order(5)
 @Component
@@ -49,7 +41,7 @@ public class WebLogAspect {
     }
 
     @Reference(timeout = 10000, retries = 0)
-    protected SysLogService logService;
+    private SysLogService logService;
 
     @Around("webLog()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {

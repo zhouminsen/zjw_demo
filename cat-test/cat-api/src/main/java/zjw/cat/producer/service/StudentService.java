@@ -8,5 +8,5 @@ import zjw.cat.producer.entity.Student;
  */
 public interface StudentService extends IService<Student> {
 
-    void add3(Student s);
+    void add(Student s);
 }
