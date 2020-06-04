@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cat.test.consumer.mapper.StudentMapper">
-
+<mapper namespace="zjw.cat.producer.mapper.StudentMapper">
+    <!-- 保存或更新 业务menu -->
+    <insert id="insertOrUpdateMenu" parameterType="zjw.cat.producer.entity.Student">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT count(*) AS COUNT FROM Student WHERE id=#{id}
+        </selectKey>
+        <!-- 如果大于0则更新 -->
+        <if test="count>0">
+            UPDATE
+            Student
+            SET
+            score = #{score},
+            WHERE id=#{id}
+        </if>
+        <!-- 如果等于0则保存 -->
+        <if test="count==0">
+            INSERT INTO Student(
+            class_name,
+            score
+            ) VALUES (
+            #{class_name},
+            #{score}
+            )
+        </if>
+    </insert>
 </mapper>

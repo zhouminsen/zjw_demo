@@ -1,4 +1,4 @@
-package zjw.cat.consumer.aspect;
+package zjw.cat.producer.aspect;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
@@ -13,7 +13,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import zjw.cat.consumer.annotation.LogAnnotation;
+import zjw.cat.producer.annotation.LogAnnotation;
 import zjw.cat.producer.entity.SysLog;
 import zjw.cat.producer.service.SysLogService;
 
@@ -35,7 +35,7 @@ public class WebLogAspect {
 
     private SysLog sysLog = null;
 
-    @Pointcut("@annotation(zjw.cat.consumer.annotation.LogAnnotation)")
+    @Pointcut("@annotation(zjw.cat.producer.annotation.LogAnnotation)")
     public void webLog() {
         //do nothing
     }

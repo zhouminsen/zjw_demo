@@ -75,14 +75,14 @@
         </dependency>
         <!--cat依赖-->
         <dependency>
-            <groupId>net.dubboclub</groupId>
-            <artifactId>cat-monitor</artifactId>
-            <version>0.0.6</version>
-        </dependency>
-        <dependency>
             <groupId>com.dianping.cat</groupId>
             <artifactId>cat-client</artifactId>
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.dubboclub</groupId>
+            <artifactId>cat-monitor</artifactId>
+            <version>0.0.6</version>
         </dependency>
 
 
@@ -96,5 +96,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

@@ -1,4 +1,4 @@
-package zjw.cat.consumer.annotation;
+package zjw.cat.producer.annotation;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package zjw.cat.consumer.config;
+package zjw.cat.producer.config;
 
 import com.dianping.cat.servlet.CatFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

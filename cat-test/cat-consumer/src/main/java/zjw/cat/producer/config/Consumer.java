@@ -1,4 +1,4 @@
-package zjw.cat.consumer.config;
+package zjw.cat.producer.config;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.context.annotation.Bean;
