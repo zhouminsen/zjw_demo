@@ -1,6 +1,7 @@
 package copy;
 
 import com.alibaba.fastjson.JSON;
+import org.junit.Test;
 import util.UtilFuns;
 
 import java.io.IOException;
@@ -10,15 +11,15 @@ import java.util.List;
 /**
  * Created by zhoum on 2019-07-22.
  */
-public class Main {
-    public static void main(String[] args) throws CloneNotSupportedException, IOException, ClassNotFoundException {
-        method();
-        method2();
-        method3();
+public class CopyTest {
 
-    }
-
-    public static void method() throws CloneNotSupportedException {
+    /**
+     * 必须实现cloneable接口，非深度拷贝
+     *
+     * @throws CloneNotSupportedException
+     */
+    @Test
+    public void method() throws CloneNotSupportedException {
         Teacher teacher = new Teacher();
         teacher.setName("周老师");
         Student student = new Student();
@@ -28,15 +29,18 @@ public class Main {
         System.out.println(teacher);
         System.out.println(teacher.getStudent());
         //clone对象
-        Teacher teacher2 = (Teacher) teacher.clone();
+//        Teacher teacher2 = (Teacher) teacher.clone();
         System.out.println(" 打印clone后的对象");
-        System.out.println(teacher2);
-        System.out.println(teacher2.getStudent());
+//        System.out.println(teacher2);
+//        System.out.println(teacher2.getStudent());
 
     }
 
-
-    public static void method2() {
+    /**
+     * 无须实现任何接口
+     */
+    @Test
+    public void jsonCopy() {
         Teacher teacher = new Teacher();
         teacher.setName("周老师");
         Student student = new Student();
@@ -52,7 +56,14 @@ public class Main {
         System.out.println(teacher2.getStudent());
     }
 
-    public static void method3() throws IOException, ClassNotFoundException {
+    /**
+     * 必须实现序列化接口
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    @Test
+    public void deepCopy() throws IOException, ClassNotFoundException {
         Teacher teacher = new Teacher();
         teacher.setName("周老师");
         Student student = new Student();
