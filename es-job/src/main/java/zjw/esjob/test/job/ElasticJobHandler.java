@@ -9,7 +9,6 @@ import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import zjw.esjob.test.config.ElasticJobListener;
 
 import javax.annotation.Resource;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,11 +18,8 @@ import java.util.concurrent.ConcurrentMap;
 public class ElasticJobHandler implements InitializingBean {
     @Resource
     private ZookeeperRegistryCenter registryCenter;
-    @Resource
-    private ElasticJobListener elasticJobListener;
 
     @Autowired
-
     private static final String TASK_PREFIX = "request_";
 
     private final static ConcurrentMap<String, Object> CONCURRENT_MAP = new ConcurrentHashMap<>();
@@ -43,7 +39,7 @@ public class ElasticJobHandler implements InitializingBean {
                                                                        String params) {
         return LiteJobConfiguration.newBuilder(
                 new SimpleJobConfiguration(
-                        JobCoreConfiguration.newBuilder(jobName, cron, shardingTotalCount).jobParameter(params).build(), jobClass.getCanonicalName())).overwrite(false);
+                        JobCoreConfiguration.newBuilder(jobName, cron, shardingTotalCount).jobParameter(params).build(), jobClass.getCanonicalName())).overwrite(true);
     }
 
     /**
@@ -62,9 +58,9 @@ public class ElasticJobHandler implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3; i++) {
             String jobName = generateKey(i);
-            String cron = "0 0/5 * * * ?";
+            String cron = "0 0/1 * * * ?";
             this.addJob(jobName, cron, 1, "周家伟" + i);
         }
     }

@@ -27,7 +27,7 @@ public class SimpleTask implements SimpleJob {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        log.info("-----任务执行完成{}，{}-----", shardingContext.getJobName(), LocalTime.now().toString());
+//        log.info("-----任务执行完成{}，{}-----", shardingContext.getJobName(), LocalTime.now().toString());
     }
 
 
