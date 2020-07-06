@@ -11,6 +11,7 @@ package zjw.esjob.test.config;
 
 import com.dangdang.ddframe.job.lite.lifecycle.api.JobAPIFactory;
 import com.dangdang.ddframe.job.lite.lifecycle.api.JobOperateAPI;
+import com.dangdang.ddframe.job.lite.lifecycle.api.JobStatisticsAPI;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.google.common.base.Optional;
@@ -53,5 +54,10 @@ public class ElasticJobConfig {
     @Bean
     public JobOperateAPI getJobOperatorAPI() {
         return JobAPIFactory.createJobOperateAPI(serverlists, namespace, Optional.fromNullable(null));
+    }
+
+    @Bean
+    public JobStatisticsAPI getJobStatisticsAPI() {
+        return JobAPIFactory.createJobStatisticsAPI(serverlists, namespace, Optional.fromNullable(null));
     }
 }

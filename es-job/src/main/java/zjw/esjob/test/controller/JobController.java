@@ -1,12 +1,16 @@
 package zjw.esjob.test.controller;
 
 import com.dangdang.ddframe.job.lite.lifecycle.api.JobOperateAPI;
+import com.dangdang.ddframe.job.lite.lifecycle.api.JobStatisticsAPI;
+import com.dangdang.ddframe.job.lite.lifecycle.domain.JobBriefInfo;
 import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zjw.esjob.test.job.ElasticJobHandler;
+
+import java.util.Collection;
 
 import static zjw.esjob.test.job.ElasticJobHandler.generateKey;
 
@@ -19,6 +23,9 @@ public class JobController {
 
     @Autowired
     private JobOperateAPI jobOperateAPI;
+
+    @Autowired
+    private JobStatisticsAPI jobStatisticsAPI;
 
     @Autowired
     private ElasticJobHandler elasticJobHandler;
@@ -63,6 +70,12 @@ public class JobController {
     public String trigger(Integer i) {
         String jobName = generateKey(i);
         jobOperateAPI.trigger(Optional.of(jobName), Optional.<String>absent());
-        return "启动成功";
+        return "立即执行成功";
+    }
+
+    @GetMapping("/getAllJob")
+    public Collection<JobBriefInfo> getAllJob() {
+        Collection<JobBriefInfo> allJobsBriefInfo = jobStatisticsAPI.getAllJobsBriefInfo();
+        return allJobsBriefInfo;
     }
 }
