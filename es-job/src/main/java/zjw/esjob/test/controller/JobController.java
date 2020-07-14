@@ -73,6 +73,10 @@ public class JobController {
         return "立即执行成功";
     }
 
+    /**
+     * 获取全部的job，包括之前注册的过的，但后面废弃的
+     * @return
+     */
     @GetMapping("/getAllJob")
     public Collection<JobBriefInfo> getAllJob() {
         Collection<JobBriefInfo> allJobsBriefInfo = jobStatisticsAPI.getAllJobsBriefInfo();
