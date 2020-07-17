@@ -1,4 +1,4 @@
-package zjw.rabbit.producer;
+package zjw.rabbit.consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +15,10 @@ class MsgConfirmCallBack implements RabbitTemplate.ConfirmCallback {
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         logger.debug("MsgConfirmCallBack, id: " + correlationData);
-
-        if (ack) {
-            // 2019-09-15 该条记录从数据中删除
+        if(ack){
             logger.debug("message send success");
-        } else {
-        	//error manage !
+        }else{
+            //error manage !
             logger.debug("message send failure");
         }
     }

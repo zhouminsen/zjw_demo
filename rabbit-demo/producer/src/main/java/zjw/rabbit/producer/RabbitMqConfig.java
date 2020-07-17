@@ -6,24 +6,23 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Frank
  *         <p>
  *         MQ 配置
  */
-@Configuration
+//@Configuration
 public class RabbitMqConfig {
 
     /**
      * ifm的请求队列
      */
-    public static final String IFM_REQUEST_QUEUE = "sos_ifm_request_queue";
+    public static final String DELAY_QUEUE = "delay_queue";
 
-    public static final String IFM_REQUEST_KEY = "sos_ifm_request_key";
+    public static final String DELAY_KEY = "delay_key";
 
-    public static final String IFM_REQUEST_EXCHANGE = "sos_ifm_request_exchange";
+    public static final String DELAY_EXCHANGE = "delay_exchange";
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -47,20 +46,20 @@ public class RabbitMqConfig {
     }
 
 
-    @Bean(name = IFM_REQUEST_EXCHANGE)
+    @Bean(name = DELAY_EXCHANGE)
     public DirectExchange orderExchange() {
-        DirectExchange directExchange = new DirectExchange(RabbitMqConfig.IFM_REQUEST_EXCHANGE, true, false);
+        DirectExchange directExchange = new DirectExchange(RabbitMqConfig.DELAY_EXCHANGE, true, false);
         return directExchange;
     }
 
-    @Bean(name = IFM_REQUEST_QUEUE)
+    @Bean(name = DELAY_QUEUE)
     public Queue orderQueue() {
-        return new Queue(RabbitMqConfig.IFM_REQUEST_QUEUE, true, false, false);
+        return new Queue(RabbitMqConfig.DELAY_QUEUE, true, false, false);
     }
 
     @Bean
     public Binding bindingQueue() {
-        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(IFM_REQUEST_KEY);
+        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(DELAY_KEY);
     }
 
 }

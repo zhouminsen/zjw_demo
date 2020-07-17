@@ -1,4 +1,4 @@
-package zjw.rabbit.producer;
+package zjw.rabbit.consumer;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -16,14 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    /**
-     * ifm的请求队列
-     */
-    public static final String IFM_REQUEST_QUEUE = "sos_ifm_request_queue";
+    public static final String DELAY_QUEUE = "delay_queue";
 
-    public static final String IFM_REQUEST_KEY = "sos_ifm_request_key";
-
-    public static final String IFM_REQUEST_EXCHANGE = "sos_ifm_request_exchange";
 
     @Autowired
     private ConnectionFactory connectionFactory;
@@ -47,20 +41,14 @@ public class RabbitMqConfig {
     }
 
 
-    @Bean(name = IFM_REQUEST_EXCHANGE)
-    public DirectExchange orderExchange() {
-        DirectExchange directExchange = new DirectExchange(RabbitMqConfig.IFM_REQUEST_EXCHANGE, true, false);
-        return directExchange;
-    }
-
-    @Bean(name = IFM_REQUEST_QUEUE)
-    public Queue orderQueue() {
-        return new Queue(RabbitMqConfig.IFM_REQUEST_QUEUE, true, false, false);
+    @Bean
+    public Queue chatMessageQueue() {
+        return new Queue(DELAY_QUEUE);
     }
 
     @Bean
-    public Binding bindingQueue() {
-        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(IFM_REQUEST_KEY);
+    public Queue chatMessageQueue2() {
+        return new Queue("user.order.receive_queue");
     }
 
 }
