@@ -242,5 +242,17 @@ public class OtherTest {
 
     }
 
+    @Test
+    public void tryCatch() {
+        try {
+            System.out.println("我是谁");
+            int i = 1 / 0;
+        } catch (Exception e) {
+            System.out.println("来到catch了");
+            throw e;
+        } finally {
+            System.out.println("我是finally");
 
+        }
+    }
 }

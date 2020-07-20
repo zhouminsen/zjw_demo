@@ -9,4 +9,6 @@ import zjw.cat.producer.entity.CalcCount;
 public interface CalcCountService extends IService<CalcCount> {
 
     void add(CalcCount s);
+
+    Integer count(Integer i, Integer j);
 }

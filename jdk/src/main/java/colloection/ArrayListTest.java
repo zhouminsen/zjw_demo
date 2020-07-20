@@ -1,11 +1,15 @@
 package colloection;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.junit.Test;
+import util.UtilFuns;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by zhoum on 2018/7/9.
@@ -95,5 +99,24 @@ public class ArrayListTest {
         }
         System.out.println("后：" + list);
         System.out.println(list2);
+    }
+
+    @Test
+    public void distinct() {
+        List<Student> students = Arrays.asList(new Student("zjw", 12),
+                new Student("zjw", 12),
+                new Student("zjw2", 12),
+                new Student("zjw3", 13)
+        );
+        List<Student> collect = students.stream().filter(UtilFuns.distinct(Student::getAge)).collect(Collectors.toList());
+        System.out.println(collect.size());
+        System.out.println(collect);
+    }
+
+    @AllArgsConstructor
+    @Data
+    private static class Student {
+        private String name;
+        private Integer age;
     }
 }

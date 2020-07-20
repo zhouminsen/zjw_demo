@@ -9,6 +9,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1946,16 +1949,17 @@ public class UtilFuns {
 
     /**
      * unicode 转换成 utf-8
-     * @author fanhui
-     * 2007-3-15
+     *
      * @param theString
      * @return
+     * @author fanhui
+     * 2007-3-15
      */
     public static String unicodeToUtf8(String theString) {
         char aChar;
         int len = theString.length();
         StringBuffer outBuffer = new StringBuffer(len);
-        for (int x = 0; x < len;) {
+        for (int x = 0; x < len; ) {
             aChar = theString.charAt(x++);
             if (aChar == '\\') {
                 aChar = theString.charAt(x++);
@@ -2015,4 +2019,11 @@ public class UtilFuns {
         }
         return outBuffer.toString();
     }
+
+    public static <T> Predicate<? super T> distinct(Function<? super T, ?> function) {
+        ConcurrentHashMap<T, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent((T) function.apply(t), Boolean.TRUE) == null;
+
+    }
+
 }

@@ -18,6 +18,11 @@ public class CalcCountServiceImpl extends ServiceImpl<CalcCountMapper, CalcCount
     public void add(CalcCount s) {
         this.save(s);
     }
+
+    @Override
+    public Integer count(Integer i, Integer j) {
+        return i + j;
+    }
 }
 
 
