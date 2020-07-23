@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+	<title>jQuery/HTML5 - 条形码扫描Demo</title>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="styles/default.css" rel="stylesheet" />
+	<script type="text/javascript" src="bootstrap/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="scripts/quagga.min.js"></script>
+	<script type="text/javascript" src="scripts/live_w_locator.js"></script>
+</head>
+<body>
+
+<div class="container">
+	<div class="panel panel-primary">
+		<div class="panel-heading text-center">
+			<h3>条形码(Code 128)扫描测试</h3>
+		</div>
+		<div class="panel-body">
+			<form>
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control input-lg" id="iccid" placeholder="请输入设备编码（ICCID）" />
+						<span class="input-group-addon" id="barcodeScan" data-toggle="modal" data-target="#barcodeScanModal"><i class="glyphicon glyphicon-camera"></i></span>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div><!-- //container -->
+
+<div class="modal fade" id="barcodeScanModal" tabindex="-1" role="dialog" aria-labelledby="sqlLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">扫描条形码</h4>
+			</div>
+			<div class="modal-body" style="padding:0;background-color:#000000;color:#ffffff;">
+				<div id="interactive" class="viewport"></div>
+				<div class="controls" style="display:none;">
+					<fieldset class="input-group">
+						<button class="stop">Stop</button>
+					</fieldset>
+					<fieldset class="reader-config-group">
+						<input type="hidden" name="decoder_readers" value="code_128" />
+						<input type="hidden" name="input-stream_constraints" value="1920x1080" />
+						<input type="hidden" name="locator_patch-size" value="medium" />
+						<input type="checkbox" checked="checked" name="locator_half-sample" />
+						<input type="hidden" name="numOfWorkers" value="4" />
+						<select name="input-stream_constraints" id="deviceSelection"></select>
+						<select name="settings_zoom"></select>
+						<input type="checkbox" name="settings_torch" />
+						<input type="hidden" id="barcodeResult" name="barcodeResult" value="" />
+					</fieldset>
+				</div>
+				<div class="text-center" id="barcodeDiv"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="barcodeScanCancel">取消</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id="barcodeScanDone">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("#barcodeScanModal").on("shown.bs.modal", function () {
+		$("#barcodeResult").val("");
+		$("#barcodeDiv").text("扫描中，请稍后直至本行显示条形码...");
+		App.init();
+		$("#barcodeScanDone").attr("disabled","disabled");
+	});
+
+	$("#barcodeScanCancel").click(function () {
+		Quagga.stop();
+	});
+
+	$("#barcodeScanDone").click(function () {
+		Quagga.stop();
+		var barcode = $("#barcodeResult").val();
+		if(barcode != "") {
+			$("#iccid").val(barcode);
+		}
+	});
+
+	Quagga.onDetected(function(result) {
+		var code = result.codeResult.code;
+
+		if (App.lastResult !== code) {
+			App.lastResult = code;
+			$("#barcodeResult").val(code);
+			$("#barcodeDiv").text("扫描结果："+code);
+			$("#barcodeScanDone").removeAttr("disabled");
+		}
+	});
+});
+</script>
+</body>
+</html>
