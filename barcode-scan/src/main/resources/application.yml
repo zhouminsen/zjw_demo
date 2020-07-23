@@ -1,0 +1,25 @@
+server:
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/web?useSSL=false&allowMultiQueries=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    cachePrepStmts: true
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    initialSize: 10
+    maxActive: 100
+    maxPoolPreparedStatementPerConnectionSize: 50
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 5
+    poolPreparedStatements: true
+    removeAbandoned: true
+    testOnBorrow: false
+    testOnReturn: false
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    type: com.alibaba.druid.pool.DruidDataSource
+    validationQuery: select 'x'
+logging:
+  path: /home/auditor/smartOneStudioSh/logs/cat-producer
