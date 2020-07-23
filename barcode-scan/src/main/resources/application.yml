@@ -21,5 +21,8 @@ spring:
     timeBetweenEvictionRunsMillis: 60000
     type: com.alibaba.druid.pool.DruidDataSource
     validationQuery: select 'x'
+  thymeleaf:
+      prefix: classpath:/templates/
+      cache: false
 logging:
   path: /home/auditor/smartOneStudioSh/logs/cat-producer
