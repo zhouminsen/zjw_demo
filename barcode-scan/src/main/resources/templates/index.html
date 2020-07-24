@@ -16,12 +16,6 @@
     <script type="text/javascript" src="js/patch/mobileBUGFix.mini.js"></script>
     <script type="text/javascript">
 
-        if (document.documentElement.clientWidth / 7.5 <= 100) {
-            document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
-        } else {
-            document.documentElement.style.fontSize = 100 + 'px';
-        }
-
         $(document).ready(function () {
 
             //文件上传
@@ -62,19 +56,23 @@
                     }
                 });
             });
-            $("#aa").click(function () {
-                var code = 111
+            $("#getData").click(function () {
+                var code = $("#result").val()
                 $.ajax({
                     type: "get",//指定请求方式
                     url: "getData?code=" + code, //请求路径
                     dataType: "json",//指定返回字符串以json格式返回,若不指定则以字符串方式返回(js识别不了的json)
                     success: function (result) {//进入success里,jquery已经把服务端传来的字符串解析到result里的 所以这里不需要加上result.responseText
                         $("#info").show();
-                        $("#id").text(result.id)
-                        $("#id2").text(result.id2)
-                        $("#id3").text(result.id3)
-                        $("#id4").text(result.id4)
-                        $("#id5").text(result.id5)
+                        $("#id").text(result.custkey)
+                        $("#id2").text(result.cust_description)
+                        $("#id3").text(result.barcode1)
+                        $("#id4").text(result.sku_description)
+                        $("#id5").text(result.lottable01)
+                        $("#id6").text(result.lottable02)
+                        $("#id7").text(result.lottable03)
+                        $("#id8").text(result.lottable04)
+                        $("#id9").text(result.confirmdate)
                     },
                     error: function (result) {//response.status=500进入error方法里 参数:result代表是整个response对象
                         alert(result.responseText);//拿到response的传输的文本
@@ -90,36 +88,52 @@
 <div>
     <form id="sform" method="post" name="sform" enctype="multipart/form-data">
         <p>
-            <span style="font-size: 14px;"><label id="scan_code">条码：</label></span>
-            <span><input class="infoInput"
-                         id="result" style="width: 120px;" type="text" placeholder="" readonly="readonly"/></span>
             <input type="button" class="upload-btn" value="扫码" onclick="$('#code').click();"/>
+            <span><input class="infoInput"
+                         id="result" style="width: 120px;" type="text" placeholder=""/></span>
             <input id="code" class="pad10 b-f" style="display: none;" type="file" accept="image/*"/>
+            <input type="button" id="getData" class="upload-btn" value="搜索"/>
         </p>
     </form>
 </div>
-<input id="aa" type="button" value="点我"/>
+<h6>详细信息</h6>
 <div id="info" style="display: none">
     <table border="1">
         <tr>
-            <td>January</td>
+            <td>客户编码</td>
             <td id="id">$100</td>
         </tr>
         <tr>
-            <td>January</td>
+            <td>客户名称</td>
             <td id="id2">$100</td>
         </tr>
         <tr>
-            <td>January</td>
+            <td>客户条形码</td>
             <td id="id3">$100</td>
         </tr>
         <tr>
-            <td>January</td>
+            <td>生产名称</td>
             <td id="id4">$100</td>
         </tr>
         <tr>
-            <td>January</td>
+            <td>生产日期</td>
             <td id="id5">$100</td>
+        </tr>
+        <tr>
+            <td>年根</td>
+            <td id="id6">$100</td>
+        </tr>
+        <tr>
+            <td>invoice No</td>
+            <td id="id7">$100</td>
+        </tr>
+        <tr>
+            <td>生产批号</td>
+            <td id="id8">$100</td>
+        </tr>
+        <tr>
+            <td>出库日期</td>
+            <td id="id9">$100</td>
         </tr>
     </table>
 </div>
