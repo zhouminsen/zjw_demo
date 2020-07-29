@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)http://wap.js.10086.cn/hyl/CAC/wpactivity/hxhzyItem/hxhzyItem.html -->
+<html>
+<head lang=en>
+
+    <script type="text/javascript" src="js/quagga.min.js"></script>
+    <script type="text/javascript" src="js/LocalResizeIMG.js"></script>
+    <script type="text/javascript" src="js/patch/mobileBUGFix.mini.js"></script>
+</head>
+<body>
+<div>
+    <div id="interactive" class="viewport"></div>
+</div>
+</body>
+</html>
+<script>
+    Quagga.init({
+        inputStream: {
+            name: 'Live',
+            type: 'LiveStream',
+            target: document.querySelector('#interactive'),
+            constraints: {
+                facingMode: 'environment',
+            },
+        },
+        locator: {
+            patchSize: 'medium',
+            halfSample: true,
+        },
+        numOfWorkers: 2,
+        decoder: {
+            readers: ['code_128_reader'],
+        },
+        locate: true,
+    })
+
+
+</script>
