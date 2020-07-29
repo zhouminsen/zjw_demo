@@ -35,7 +35,20 @@ public class ScanController {
     @ResponseBody
     public List<Map<String, Object>> getData(@RequestParam String code) {
         List<Map<String, Object>> list = new ArrayList<>();
-        Connection conn = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("CUSTKEY", "CUSTKEY");
+        map.put("CUST_DESCRIPTION", ("CUST_DESCRIPTION"));
+        map.put("BARCODE1", ("BARCODE1"));
+        map.put("SKU_DESCRIPTION", ("SKU_DESCRIPTION"));
+        map.put("LOTTABLE01", ("LOTTABLE01"));
+        map.put("LOTTABLE02", ("LOTTABLE02"));
+        map.put("LOTTABLE03", ("LOTTABLE03"));
+        map.put("LOTTABLE04", ("LOTTABLE04"));
+        map.put("CONFIRMDATE", ("CONFIRMDATE"));
+        list.add(map);
+        return list;
+
+        /*Connection conn = null;
         CallableStatement pstmt = null;
         ResultSet rs = null;
         try {
@@ -104,6 +117,6 @@ public class ScanController {
             }
 
         }
-        return list;
+        return list;*/
     }
 }

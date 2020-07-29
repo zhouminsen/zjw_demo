@@ -1,10 +1,10 @@
 server:
-  port: 443
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: admin012345
-    key-store-type: PKCS12
-    key-alias: tomcat
+#  port: 443
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-password: admin012345
+#    key-store-type: PKCS12
+#    key-alias: tomcat
 spring:
   datasource:
     url: jdbc:sqlserver://52.208.206.206:1433;databaseName=SMARTWMS_OY

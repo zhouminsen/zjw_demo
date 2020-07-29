@@ -2,6 +2,12 @@
 <!-- saved from url=(0066)http://wap.js.10086.cn/hyl/CAC/wpactivity/hxhzyItem/hxhzyItem.html -->
 <html xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head lang=en>
+    <meta content="text/html; charset=UTF-8" http-equiv=Content-Type>
+    <meta name=viewport
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <meta name=GENERATOR content="MShtml 8.00.6001.23588">
     <title>条形码扫描示例</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/default.css" rel="stylesheet"/>
@@ -10,9 +16,14 @@
     <script type="text/javascript" src="js/quagga.min.js"></script>
     <script type="text/javascript" src="js/LocalResizeIMG.js"></script>
     <script type="text/javascript" src="js/patch/mobileBUGFix.mini.js"></script>
+    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
     <style>
+        table {
+            /*margin: auto;*/
+        }
+
         .col-2-h-t {
             background-color: #990033;
             color: #FFFFFF;
@@ -114,26 +125,39 @@
     <div class="panel">
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-12">
-                    <img src="download.jpg" height="100px" width="100px">
-                    <h3 class="inline">验证码检索</h3>
-                </div>
+                <table style="margin-left: 3%">
+                    <tr>
+                        <td>
+                            <img src="download.jpg" height="130px" width="130px">
+                        </td>
+                        <td>&nbsp &nbsp</td>
+                        <td>
+                            <h3>验证码检索</h3>
+                            <br>
+                            <br>
+                            请点击链接进行扫描序列号
+                        </td>
+                    </tr>
+                </table>
                 <br>
                 <div class=" col-md-12">
-                    <form id="sform" method="post" name="sform" enctype="multipart/form-data">
+                    <form>
                         <div class="input-group">
-                                <span class="input-group-addon" id="barcodeScan" data-toggle="modal"
-                                      style="cursor: pointer" onclick="$('#code').click();">扫描</span>
-                            <input type="text" class="form-control input-lg" placeholder="请点击链接进行扫描序列号"
-                                   id="result" v-model="code"/>
+                            <span class="input-group-addon" id="camera" onclick="$('#code').click();"
+                                  style="cursor: pointer">扫描</span>
+                            <input type="text" class="form-control input-lg" id="result" placeholder="请点击链接进行扫描序列号"
+                                   v-model="code"/>
                             <span class="input-group-addon" id="requestData" style="cursor: pointer"
                                   v-on:click="getData">搜索</span>
+                            <input id="code" class="pad10 b-f" style="display: none;" type="file" accept="image/*"/>
                         </div>
 
                     </form>
                 </div>
                 <div id="infoDetail" v-if="Datum.length>0">
+                    <br>
                     <h3>详细信息</h3>
+                    <br>
                     <table style="margin: auto;table-layout:fixed;width:100%" v-for="myresult in Datum">
                         <tr>
                             <td class="column col-2-h-t">客户编码</td>
@@ -190,14 +214,13 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
 
     $(document).ready(function () {
 
         //文件上传
-        $.each($('#sform input:file'), function (index, item) {
+        $.each($('input:file'), function (index, item) {
             //文件压缩
             $(item).localResizeIMG({
                 //width : 800,
@@ -218,8 +241,8 @@
                         if (result) {
                             if (result.codeResult) {
                                 $("#result").val(result.codeResult.code);
-                                var code = result.codeResult.code;
-
+                                //让vue识别修改的值
+                                $("#result")[0].dispatchEvent(new Event('input'))
                             } else {
                                 $("#result").val("");
                                 alert("未扫码成功，请重新扫码!");
@@ -231,7 +254,8 @@
                         util.removeMask();
                     });
                 }
-            });
+            })
+            ;
         })
     })
 
@@ -245,6 +269,8 @@
         methods: {
             getData: function () {
                 if (!this.code) {
+                    alert(this.code)
+                    alert(app.code)
                     return;
                 }
                 axios.get('getData?code=' + this.code)
@@ -258,7 +284,7 @@
                         }
                     })
                     .catch(function (error) {
-
+                        console.log(error)
                     })
             }
         }
