@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +25,7 @@ public class ScanController {
     @GetMapping("")
     public String index() {
 
-        return "index";
+        return "index2";
     }
 
     @Autowired
@@ -31,8 +33,8 @@ public class ScanController {
 
     @GetMapping("/getData")
     @ResponseBody
-    public Map<String, Object> getData(@RequestParam String code) {
-        Map<String, Object> map = new HashMap<>();
+    public List<Map<String, Object>> getData(@RequestParam String code) {
+        List<Map<String, Object>> list = new ArrayList<>();
         Connection conn = null;
         CallableStatement pstmt = null;
         ResultSet rs = null;
@@ -60,15 +62,19 @@ public class ScanController {
                 pstmt.getObject(12);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
-                    map.put("custkey", rs.getObject("CUSTKEY"));
-                    map.put("cust_description", rs.getObject("CUST_DESCRIPTION"));
-                    map.put("barcode1", rs.getObject("BARCODE1"));
-                    map.put("sku_description", rs.getObject("SKU_DESCRIPTION"));
-                    map.put("lottable01", rs.getObject("LOTTABLE01"));
-                    map.put("lottable02", rs.getObject("LOTTABLE02"));
-                    map.put("lottable03", rs.getObject("LOTTABLE03"));
-                    map.put("lottable04", rs.getObject("LOTTABLE04"));
-                    map.put("confirmdate", rs.getObject("CONFIRMDATE"));
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("CUSTKEY", rs.getObject("CUSTKEY"));
+                    map.put("CUST_DESCRIPTION", rs.getObject("CUST_DESCRIPTION"));
+                    map.put("BARCODE1", rs.getObject("BARCODE1"));
+                    map.put("SKU_DESCRIPTION", rs.getObject("SKU_DESCRIPTION"));
+                    map.put("LOTTABLE01", rs.getObject("LOTTABLE01"));
+                    map.put("LOTTABLE02", rs.getObject("LOTTABLE02"));
+                    map.put("LOTTABLE03", rs.getObject("LOTTABLE03"));
+                    map.put("LOTTABLE04", rs.getObject("LOTTABLE04"));
+                    map.put("CONFIRMDATE", rs.getObject("CONFIRMDATE"));
+                    list.add(map);
+                    list.add(map);
+                    list.add(map);
                 }
             }
 
@@ -98,6 +104,6 @@ public class ScanController {
             }
 
         }
-        return map;
+        return list;
     }
 }

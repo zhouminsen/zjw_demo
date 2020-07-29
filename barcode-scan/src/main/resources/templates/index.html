@@ -1,143 +1,294 @@
 <!DOCTYPE html>
-<!-- saved from url=(0066)http://wap.js.10086.cn/hyl/CAC/wpactivity/hxhzyItem/hxhzyItem.html -->
-<html>
-<head lang=en>
-    <title>条形码扫描示例</title>
-    <meta content="text/html; charset=UTF-8" http-equiv=Content-Type>
-    <meta name=viewport
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;">
-    <meta name=apple-mobile-web-app-capable content=yes>
-    <meta name=apple-mobile-web-app-status-bar-style content=black>
-    <meta name=GENERATOR content="MShtml 8.00.6001.23588">
-    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="js/util.js"></script>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <title>jQuery/HTML5 - 条形码扫描Demo</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/default.css" rel="stylesheet"/>
+    <script type="text/javascript" src="bootstrap/js/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="js/quagga.min.js"></script>
-    <script type="text/javascript" src="js/LocalResizeIMG.js"></script>
-    <script type="text/javascript" src="js/patch/mobileBUGFix.mini.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="js/live_w_locator.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <style>
+        .col-2-h-t {
+            background-color: #990033;
+            color: #FFFFFF;
+            font-weight: bold;
+            border-radius: 5px 0px 0px 0px;
+            text-align: left;
+        }
 
-        $(document).ready(function () {
+        .col-2-h {
+            float: left;
+            width: 25%;
+            padding-left: 10px;
+            padding-right: 5px;
+            font-weight: bold;
+            background-color: #990033;
+            color: #FFFFFF;
+            text-align: left;
+        }
 
-            //文件上传
-            $.each($('#sform input:file'), function (index, item) {
-                //文件压缩
-                $(item).localResizeIMG({
-                    //width : 800,
-                    quality: 1,
-                    before: function () {
-                        util.showMask();
-                    },
-                    success: function (result) {
-                        var imgData = result.clearBase64;
-                        Quagga.decodeSingle({
-                            //解码方式，与条形码的编码方式有关
-                            decoder: {
-                                readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader"] // List of active readers
-                            },
-                            locate: true, // try to locate the barcode in the image
-                            src: 'data:image/jpg;base64,' + imgData // or 'data:image/jpg;base64,' + data
-                        }, function (result) {
-                            if (result) {
-                                if (result.codeResult) {
-                                    $("#result").val(result.codeResult.code);
-                                    $("#info").show();
-                                    var code = result.codeResult.code;
+        .col-2-h-f {
+            font-weight: bold;
+            background-color: #990033;
+            color: #FFFFFF;
+            border-radius: 0px 0px 0px 5px;
+            text-align: left;
+        }
 
-                                } else {
-                                    $("#result").val("");
-                                    alert("未扫码成功，请重新扫码!");
-                                }
-                            } else {
-                                alert("挂了!");
-                                $("#result").val("");
-                            }
-                            util.removeMask();
-                        });
-                    }
-                });
-            });
-            $("#getData").click(function () {
-                var code = $("#result").val()
-                $.ajax({
-                    type: "get",//指定请求方式
-                    url: "getData?code=" + code, //请求路径
-                    dataType: "json",//指定返回字符串以json格式返回,若不指定则以字符串方式返回(js识别不了的json)
-                    success: function (result) {//进入success里,jquery已经把服务端传来的字符串解析到result里的 所以这里不需要加上result.responseText
-                        $("#info").show();
-                        $("#id").text(result.custkey)
-                        $("#id2").text(result.cust_description)
-                        $("#id3").text(result.barcode1)
-                        $("#id4").text(result.sku_description)
-                        $("#id5").text(result.lottable01)
-                        $("#id6").text(result.lottable02)
-                        $("#id7").text(result.lottable03)
-                        $("#id8").text(result.lottable04)
-                        $("#id9").text(result.confirmdate)
-                    },
-                    error: function (result) {//response.status=500进入error方法里 参数:result代表是整个response对象
-                        alert(result.responseText);//拿到response的传输的文本
-                    }
-                });
-            });
+        .col-2-c-t {
+            background-color: #D8D8D8;
+            border-radius: 0px 5px 0px 0px;
+            text-align: left;
+        }
 
-        });
+        .col-2-c {
+            float: left;
+            width: 75%;
+            padding-left: 10px;
+            padding-right: 5px;
+            background-color: #D8D8D8;
+            text-align: left;
+        }
 
-    </script>
+        .col-2-c-f {
+            background-color: #D8D8D8;
+            border-radius: 0px 0px 5px 0px;
+            text-align: left;
+        }
+
+        .contents {
+            width: 98%;
+            float: center;
+            margin-left: 3px;
+        }
+
+        .input {
+            border-color: #cccccc;
+            font-size: 14px;
+            padding: 6px;
+            border-width: 2px;
+            border-radius: 0px;
+            border-style: solid;
+        }
+
+        .column {
+            width: 25%;
+            font-weight: bold;
+            background-color: #990033;
+            color: #FFFFFF;
+            text-align: left;
+        }
+
+        .column2 {
+            width: 25%;
+            font-weight: bold;
+            background-color: #D8D8D8;
+            /*border-radius: 0px 5px 0px 0px;*/
+            text-align: left;
+        }
+
+        .columnLeft {
+            border-radius: 5px 0px 0px 0px;
+        }
+
+        .column2Right {
+            border-radius: 0px 0px 0px 5px;
+        }
+
+        .inline {
+            display: inline;
+        }
+        .input-group-addon:hover{
+            background-color:rgb(66,141,199) ;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <form id="sform" method="post" name="sform" enctype="multipart/form-data">
-        <p>
-            <input type="button" class="upload-btn" value="扫码" onclick="$('#code').click();"/>
-            <span><input class="infoInput"
-                         id="result" style="width: 120px;" type="text" placeholder=""/></span>
-            <input id="code" class="pad10 b-f" style="display: none;" type="file" accept="image/*"/>
-            <input type="button" id="getData" class="upload-btn" value="搜索"/>
-        </p>
-    </form>
+
+<div class="container" id="app">
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="download.jpg" height="100px" width="100px">
+                    <h3 class="inline">验证码检索</h3>
+                </div>
+                <br>
+                <div class=" col-md-12">
+                    <form>
+                        <div class="input-group">
+                        <span class="input-group-addon" id="barcodeScan" data-toggle="modal" style="cursor: pointer"
+                              data-target="#barcodeScanModal">扫描</span>
+                            <input type="text" class="form-control input-lg" id="iccid" placeholder="请点击链接进行扫描序列号"
+                                   v-model="code"/>
+                            <span class="input-group-addon" id="requestData" style="cursor: pointer"
+                                  v-on:click="getData">搜索</span>
+                        </div>
+
+                    </form>
+                </div>
+                <div id="infoDetail" v-if="Datum.length>0">
+                    <h3>详细信息</h3>
+                    <table style="margin: auto;table-layout:fixed;width:100%" v-for="myresult in Datum">
+                        <tr>
+                            <td class="column col-2-h-t">客户编码</td>
+                            <td class="column2 col-2-c-t">{{myresult.CUSTKEY}}</td>
+                        </tr>
+                        <tr>
+                            <td class="column">客户名称</td>
+                            <td class="column2">{{myresult.CUST_DESCRIPTION}}</td>
+                        </tr>
+                        <tr>
+                            <td class="column">产品条码</td>
+                            <td class="column2">{{myresult.BARCODE1}}</td>
+                        </tr>
+                        <tr>
+                            <td class="column">产品名称</td>
+                            <td class="column2">{{myresult.SKU_DESCRIPTION}}</td>
+                        </tr>
+                        <tr>
+                            <td class="column">生产日期</td>
+                            <td class="column2">{{myresult.LOTTABLE01}}</td>
+                        </tr>
+                        <tr>
+                            <td class="column">年根</td>
+                            <td class="column2">{{myresult.LOTTABLE02}}</td>
+                        </tr>
+                        <tr v-if="myresult.LOTTABLE03">
+                            <td class="column">invoice No</td>
+                            <td class="column2">{{myresult.LOTTABLE03}}</td>
+                        </tr>
+                        <tr v-if="!myresult.LOTTABLE03 && myresult.LOTTABLE04">
+                            <td class="column">invoice No</td>
+                            <td class="column2">{{myresult.LOTTABLE04}}</td>
+                        </tr>
+                        <tr v-if="myresult.LOTTABLE04">
+                            <td class="column">生产批号</td>
+                            <td class="column2">{{myresult.LOTTABLE04}}</td>
+                        </tr>
+                        <tr v-if="!myresult.LOTTABLE04 && myresult.LOTTABLE03">
+                            <td class="column">生产批号</td>
+                            <td class="column2">{{myresult.LOTTABLE03}}</td>
+                        </tr>
+                        <tr v-if="!myresult.LOTTABLE03 & !myresult.LOTTABLE04">
+                            <td class="column">生产批号</td>
+                            <td id="id8" class="column2">请拨打 021-6067-2792</td>
+                        </tr>
+                        <tr>
+                            <td class="column col-2-h-f">出库日期</td>
+                            <td class="column2 col-2-c-f">{{myresult.CONFIRMDATE}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="noData" v-if="noData"><h3 style="color:red;">没有数据 !!!</h3></div>
+            </div>
+        </div>
+    </div>
+</div><!-- //container -->
+
+<div class="modal fade" id="barcodeScanModal" tabindex="-1" role="dialog" aria-labelledby="sqlLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">扫描条形码</h4>
+            </div>
+            <div class="modal-body" style="padding:0;background-color:#000000;color:#ffffff;">
+                <div id="interactive" class="viewport"></div>
+                <div class="controls" style="display:none;">
+                    <fieldset class="input-group">
+                        <button class="stop">Stop</button>
+                    </fieldset>
+                    <fieldset class="reader-config-group">
+                        <input type="hidden" name="decoder_readers" value="code_128"/>
+                        <input type="hidden" name="input-stream_constraints" value="1920x1080"/>
+                        <input type="hidden" name="locator_patch-size" value="medium"/>
+                        <input type="checkbox" checked="checked" name="locator_half-sample"/>
+                        <input type="hidden" name="numOfWorkers" value="4"/>
+                        <select name="input-stream_constraints" id="deviceSelection"></select>
+                        <select name="settings_zoom"></select>
+                        <input type="checkbox" name="settings_torch"/>
+                        <input type="hidden" id="barcodeResult" name="barcodeResult" value=""/>
+                    </fieldset>
+                </div>
+                <div class="text-center" id="barcodeDiv"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="barcodeScanCancel">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="barcodeScanDone">确定</button>
+            </div>
+        </div>
+    </div>
 </div>
-<h6>详细信息</h6>
-<div id="info" style="display: none">
-    <table border="1">
-        <tr>
-            <td>客户编码</td>
-            <td id="id">$100</td>
-        </tr>
-        <tr>
-            <td>客户名称</td>
-            <td id="id2">$100</td>
-        </tr>
-        <tr>
-            <td>客户条形码</td>
-            <td id="id3">$100</td>
-        </tr>
-        <tr>
-            <td>生产名称</td>
-            <td id="id4">$100</td>
-        </tr>
-        <tr>
-            <td>生产日期</td>
-            <td id="id5">$100</td>
-        </tr>
-        <tr>
-            <td>年根</td>
-            <td id="id6">$100</td>
-        </tr>
-        <tr>
-            <td>invoice No</td>
-            <td id="id7">$100</td>
-        </tr>
-        <tr>
-            <td>生产批号</td>
-            <td id="id8">$100</td>
-        </tr>
-        <tr>
-            <td>出库日期</td>
-            <td id="id9">$100</td>
-        </tr>
-    </table>
-</div>
+
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#barcodeScanModal").on("shown.bs.modal", function () {
+            $("#barcodeResult").val("");
+            $("#barcodeDiv").text("扫描中，请稍后直至本行显示条形码...");
+            App.init();
+            $("#barcodeScanDone").attr("disabled", "disabled");
+        });
+
+        $("#barcodeScanCancel").click(function () {
+            Quagga.stop();
+        });
+
+        $("#barcodeScanDone").click(function () {
+            Quagga.stop();
+            var barcode = $("#barcodeResult").val();
+            if (barcode != "") {
+
+                $("#iccid").val(barcode);
+            }
+        });
+        Quagga.onDetected(function (result) {
+            var code = result.codeResult.code;
+
+            if (App.lastResult !== code) {
+                App.lastResult = code;
+                $("#barcodeResult").val(code);
+                $("#barcodeDiv").text("扫描结果：" + code);
+                $("#barcodeScanDone").removeAttr("disabled");
+            }
+        });
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            code: '',
+            noData: false,
+            Datum: []
+        },
+        methods: {
+            getData: function () {
+                if (!this.code) {
+                    return;
+                }
+                axios.get('getData?code=' + this.code)
+                    .then(function (response) {
+                        if (response.data.length > 0) {
+                            app.noData = false;
+                            app.Datum = response.data;
+                        } else {
+                            app.Datum = [];
+                            app.noData = true;
+                        }
+                    })
+                    .catch(function (error) {
+
+                    })
+            }
+        }
+    })
+</script>
 </body>
 </html>
-<script>
-</script>
