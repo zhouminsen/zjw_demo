@@ -1,8 +1,8 @@
 spring:
   application:
-    name: sos-configuration-service
+    name:
   main:
-    web-application-type: none
+    web-application-type:
   rabbitmq:
     host: 127.0.0.1
     port: 5672

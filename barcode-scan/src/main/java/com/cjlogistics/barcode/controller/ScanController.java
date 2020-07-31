@@ -25,7 +25,19 @@ public class ScanController {
     @GetMapping("")
     public String index() {
 
+        return "index";
+    }
+
+    @GetMapping("index2")
+    public String index2() {
+
         return "index2";
+    }
+
+    @GetMapping("index3")
+    public String index3() {
+
+        return "index3";
     }
 
     @Autowired
@@ -35,7 +47,7 @@ public class ScanController {
     @ResponseBody
     public List<Map<String, Object>> getData(@RequestParam String code) {
         List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
+       /* Map<String, Object> map = new HashMap<>();
         map.put("CUSTKEY", "CUSTKEY");
         map.put("CUST_DESCRIPTION", ("CUST_DESCRIPTION"));
         map.put("BARCODE1", ("BARCODE1"));
@@ -46,9 +58,9 @@ public class ScanController {
         map.put("LOTTABLE04", ("LOTTABLE04"));
         map.put("CONFIRMDATE", ("CONFIRMDATE"));
         list.add(map);
-        return list;
+        return list;*/
 
-        /*Connection conn = null;
+        Connection conn = null;
         CallableStatement pstmt = null;
         ResultSet rs = null;
         try {
@@ -117,6 +129,6 @@ public class ScanController {
             }
 
         }
-        return list;*/
+        return list;
     }
 }

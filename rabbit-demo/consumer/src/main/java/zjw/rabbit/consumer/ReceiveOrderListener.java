@@ -24,11 +24,11 @@ public class ReceiveOrderListener {
      * @Title: onMessage
      * @Description: 接收mq消息
      */
-    @RabbitListener(queues = RabbitMqConfig.DELAY_QUEUE)
+    @RabbitListener(queues = RabbitMqConfig.NORMAL_QUEUE)
     public void onMessage(Message message, Channel channel) throws Exception {
         try {
             String s = new String(message.getBody());
-            log.info("consumer--:" + message.getMessageProperties() + ":" + s);
+            log.info("consumer--" + RabbitMqConfig.NORMAL_QUEUE + ":" + message.getMessageProperties() + ":" + s);
         } catch (Exception e) {
             log.error("consumer exception {}", e);
             /*//抛弃这条消息
@@ -49,11 +49,36 @@ public class ReceiveOrderListener {
      * @Title: onMessage
      * @Description: 接收mq消息
      */
-    @RabbitListener(queues = "user.order.receive_queue")
+    @RabbitListener(queues = RabbitMqConfig.RECEIVE_QUEUE)
     public void onMessage2(Message message, Channel channel) throws Exception {
         try {
             String s = new String(message.getBody());
-            log.info("consumer--:" + message.getMessageProperties() + ":" + s);
+            log.info("consumer--" + RabbitMqConfig.RECEIVE_QUEUE + ":" + message.getMessageProperties() + ":" + s);
+        } catch (Exception e) {
+            log.error("consumer exception {}", e);
+            /*//抛弃这条消息
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);*/
+
+           /* //放回队列
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);*/
+        } finally {
+            //不管消费成不成功，一律ack，之后根据数据库记录做补偿
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        }
+    }
+
+    /**
+     * @param message
+     * @param channel
+     * @throws Exception
+     * @Title: onMessage
+     * @Description: 接收mq消息
+     */
+    @RabbitListener(queues = RabbitMqConfig.DELAY_PLUGIN_QUEUE)
+    public void onMessage3(Message message, Channel channel) throws Exception {
+        try {
+            String s = new String(message.getBody());
+            log.info("consumer--" + RabbitMqConfig.DELAY_PLUGIN_QUEUE + ":" + message.getMessageProperties() + ":" + s);
         } catch (Exception e) {
             log.error("consumer exception {}", e);
             /*//抛弃这条消息

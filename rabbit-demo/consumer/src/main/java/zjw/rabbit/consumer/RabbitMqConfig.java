@@ -17,7 +17,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    public static final String DELAY_QUEUE = "delay_queue";
+    public static final String NORMAL_QUEUE = "normal_queue";
+
+    public static final String RECEIVE_QUEUE = "receive_queue";
+
+    public static final String DELAY_PLUGIN_QUEUE = "delay.plugin.queue";
 
 
     @Autowired
@@ -41,15 +45,20 @@ public class RabbitMqConfig {
         return template;
     }
 
-
     @Bean
-    public Queue chatMessageQueue() {
-        return new Queue(DELAY_QUEUE);
+    public Queue normalQueue() {
+        return new Queue(NORMAL_QUEUE);
     }
 
     @Bean
-    public Queue chatMessageQueue2() {
-        return new Queue("user.order.receive_queue");
+    public Queue receiveQueue() {
+        return new Queue(RECEIVE_QUEUE);
+    }
+
+
+    @Bean
+    public Queue delayPluginQueue() {
+        return new Queue(DELAY_PLUGIN_QUEUE);
     }
 
 }

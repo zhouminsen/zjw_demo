@@ -1,6 +1,6 @@
 spring:
   application:
-    name: sos-configuration-service
+    name:
   main:
     web-application-type: none
   rabbitmq:
