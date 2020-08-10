@@ -32,26 +32,28 @@ public class rabbitTest extends BaseTest {
     }
 
     /**
-     * 一定要按照过期时间升序进行入队
+     * 一定要按照过期时间升序入队
      * 过期时间降序入队，会导致所有消息都以最长过期时间进行消费
      */
     @Test
     public void sendTllDelayMq() {
         String str = "tll哈哈哈";
-        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
-        rabbitTemplate.convertAndSend(TLLDelayMqConfig.DELAY_EXCHANGE, TLLDelayMqConfig.DELAY_KEY, str + "1", message -> {
-            message.getMessageProperties().setExpiration("30000");
-            return message;
-        }, correlationData);
-        correlationData = new CorrelationData(UUID.randomUUID().toString());
         rabbitTemplate.convertAndSend(TLLDelayMqConfig.DELAY_EXCHANGE, TLLDelayMqConfig.DELAY_KEY, str + "2", message -> {
             message.getMessageProperties().setExpiration("20000");
             return message;
-        }, correlationData);
+        }, new CorrelationData(UUID.randomUUID().toString()));
+        rabbitTemplate.convertAndSend(TLLDelayMqConfig.DELAY_EXCHANGE, TLLDelayMqConfig.DELAY_KEY, str + "2", message -> {
+            message.getMessageProperties().setExpiration("25000");
+            return message;
+        }, new CorrelationData(UUID.randomUUID().toString()));
+        rabbitTemplate.convertAndSend(TLLDelayMqConfig.DELAY_EXCHANGE, TLLDelayMqConfig.DELAY_KEY, str + "1", message -> {
+            message.getMessageProperties().setExpiration("30000");
+            return message;
+        }, new CorrelationData(UUID.randomUUID().toString()));
     }
 
     /**
-     * 同个线程一次只能发送一个延迟消息
+     * 同个线程发送多次消息，只会有一条消息入队
      */
     @Test
     public void sendDlxDelayMq() {

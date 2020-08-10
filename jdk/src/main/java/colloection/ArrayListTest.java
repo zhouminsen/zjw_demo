@@ -87,6 +87,9 @@ public class ArrayListTest {
         System.out.println(answer);
     }
 
+    /**
+     * 删除
+     */
     @Test
     public void test6() {
         List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));

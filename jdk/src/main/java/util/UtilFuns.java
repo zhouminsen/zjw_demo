@@ -1932,14 +1932,14 @@ public class UtilFuns {
         return this.getClass().getResource("/").getPath();
     }
 
-    public static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
+    public static <T> T deepCopy(T src) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(byteOut);
         out.writeObject(src);
         ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
         ObjectInputStream in = new ObjectInputStream(byteIn);
         @SuppressWarnings("unchecked")
-        List<T> dest = (List<T>) in.readObject();
+        T dest = (T) in.readObject();
         out.close();
         byteOut.close();
         in.close();
