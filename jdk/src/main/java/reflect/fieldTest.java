@@ -14,7 +14,7 @@ public class fieldTest {
         OrderTableDO orderTableDO = new OrderTableDO();
         orderTableDO.setAddress("湖北省武汉市武昌区徐东大街");
         orderTableDO.setOrderDate(new Date());
-        System.out.println(orderTableDO.getByField("order"));
+        System.out.println(orderTableDO.getByField("orderDate"));
     }
 
 

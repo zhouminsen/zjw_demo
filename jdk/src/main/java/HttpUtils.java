@@ -39,7 +39,7 @@ public class HttpUtils {
         map.put("sign", sign);
         map.put("data", data);
         map.put("appSecret", appSecret);
-        URL httpUrl = new URL("http://127.0.0.1:8054/ifm/expressService/requestData");
+        URL httpUrl = new URL("http://10.131.27.18:8054/ifm/expressService/requestData");
         URLConnection connection = httpUrl.openConnection();
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
         connection.setDoOutput(true);
@@ -55,7 +55,7 @@ public class HttpUtils {
                 line = (String) var8.next();
                 buffer.append(line).append("=").append(URLEncoder.encode((String) map.get(line), "utf-8")).append("&");
             }
-            buffer.substring(0, buffer.toString().length() - 1);
+            buffer.deleteCharAt(buffer.toString().length() - 1);
         }
         printWriter.print(buffer.toString());
         printWriter.flush();
